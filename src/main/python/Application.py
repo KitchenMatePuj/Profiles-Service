@@ -4,8 +4,9 @@ from src.main.python.models.Profile import Base
 from src.main.python.controller.ProfileController import router as profile_router
 from src.main.python.controller.FollowController import router as follower_router
 from src.main.python.controller.IngredientController import router as ingredient_router
-from src.main.python.controller.RestrictionController import router as restriction_router
+from src.main.python.controller.IngredientAllergyController import router as allergy_router
 from src.main.python.controller.ShoppingListController import router as shopping_list_router
+from src.main.python.controller.SavedRecipeController import router as saved_recipe_router
 
 def create_app() -> FastAPI:
     Base.metadata.create_all(bind=engine)
@@ -13,8 +14,9 @@ def create_app() -> FastAPI:
     app.include_router(profile_router)
     app.include_router(follower_router)
     app.include_router(ingredient_router)
-    app.include_router(restriction_router)
+    app.include_router(allergy_router)
     app.include_router(shopping_list_router)
+    app.include_router(saved_recipe_router)
 
 
     return app

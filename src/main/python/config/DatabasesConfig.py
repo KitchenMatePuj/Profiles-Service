@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from src.main.python.ApplicationProperties import ApplicationProperties
 
 from src.main.python.models.Profile import Profile
-from src.main.python.models.Restriction import Restriction
+from src.main.python.models.IngredientAllergy import IngredientAllergy
 from src.main.python.models.Follow_model import Follow
 from src.main.python.models.ShoppingList import ShoppingList
 from src.main.python.models.Ingredient import Ingredient
@@ -24,7 +24,7 @@ engine = create_engine(
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 Profile.__table__.create(bind=engine, checkfirst=True)
-Restriction.__table__.create(bind=engine, checkfirst=True)
+IngredientAllergy.__table__.create(bind=engine, checkfirst=True)
 Follow.__table__.create(bind=engine, checkfirst=True)
 ShoppingList.__table__.create(bind=engine, checkfirst=True)
 Ingredient.__table__.create(bind=engine, checkfirst=True)
