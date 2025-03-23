@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
-from src.main.python.models import Base
-
 from sqlalchemy.orm import relationship
+from src.main.python.models import Base
 
 class Profile(Base):
     __tablename__ = "profile"
@@ -18,25 +17,20 @@ class Profile(Base):
     account_status = Column(String(50))
     cooking_time = Column(Integer)
 
-    # One-to-many with Restriction
-    restrictions = relationship("Restriction", back_populates="profile", cascade="all, delete")
+    ingredient_allergies = relationship("IngredientAllergy", back_populates="profile", cascade="all, delete")
 
-    # One-to-many with ShoppingList
     shopping_lists = relationship(
         'ShoppingList',
         back_populates='profile',
         cascade='all, delete-orphan'
     )
 
-    # Self many-to-many for Follow
-    # "followed" are the people I follow
     followed = relationship(
         'Follow',
         foreign_keys='Follow.follower_id',
         back_populates='follower',
         cascade='all, delete-orphan'
     )
-    # "followers" are the people that follow me
     followers = relationship(
         'Follow',
         foreign_keys='Follow.followed_id',
@@ -44,3 +38,7 @@ class Profile(Base):
         cascade='all, delete-orphan'
     )
 
+    saved_recipes = relationship(
+        'SavedRecipe',
+        cascade='all, delete-orphan'
+    )

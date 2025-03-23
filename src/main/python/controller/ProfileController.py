@@ -4,12 +4,9 @@ from typing import List
 
 from src.main.python.config.DatabasesConfig import get_db
 from src.main.python.service.ProfileService import (
-    create_profile,
-    get_profile_by_id,
-    list_profiles,
-    update_profile,
-    delete_profile
-)
+
+    create_profile, get_profile_by_keycloak_id, list_profiles, update_profile_by_keycloak_id,
+    delete_profile_by_keycloak_id, get_profile_summary_by_keycloak_id)
 from src.main.python.transformers.ProfileTransformer import ProfileResponse
 
 router = APIRouter(prefix="/profiles", tags=["Profile"])
@@ -18,26 +15,23 @@ router = APIRouter(prefix="/profiles", tags=["Profile"])
 def create_profile_endpoint(data: dict, db: Session = Depends(get_db)):
     return create_profile(db, data)
 
-@router.get("/{profile_id}", response_model=ProfileResponse)
-def get_profile_endpoint(profile_id: int, db: Session = Depends(get_db)):
-    """Retrieves a profile by ID."""
-    profile = get_profile_by_id(db, profile_id)
-    if not profile:
-        raise HTTPException(status_code=404, detail="Profile not found.")
-    return profile
+@router.get("/{keycloak_user_id}", response_model=ProfileResponse)
+def get_profile_by_keycloak(keycloak_user_id: str, db: Session = Depends(get_db)):
+    return get_profile_by_keycloak_id(db, keycloak_user_id)
 
 @router.get("/", response_model=List[ProfileResponse])
 def list_profiles_endpoint(db: Session = Depends(get_db)):
     """Retrieves all profiles."""
     return list_profiles(db)
 
-@router.put("/{profile_id}", response_model=ProfileResponse)
-def update_profile_endpoint(profile_id: int, data: dict, db: Session = Depends(get_db)):
-    """Updates a profile entry."""
-    return update_profile(db, profile_id, data)
+@router.put("/{keycloak_user_id}", response_model=ProfileResponse)
+def update_profile_by_keycloak(keycloak_user_id: str, data: dict, db: Session = Depends(get_db)):
+    return update_profile_by_keycloak_id(db, keycloak_user_id, data)
 
-@router.delete("/{profile_id}", status_code=204)
-def delete_profile_endpoint(profile_id: int, db: Session = Depends(get_db)):
-    """Deletes a profile entry."""
-    delete_profile(db, profile_id)
-    return {}
+@router.delete("/{keycloak_user_id}")
+def delete_profile_by_keycloak(keycloak_user_id: str, db: Session = Depends(get_db)):
+    return delete_profile_by_keycloak_id(db, keycloak_user_id)
+
+@router.get("/summary/{keycloak_user_id}")
+def get_profile_summary_by_keycloak_user_id(keycloak_user_id: str, db: Session = Depends(get_db)):
+    return get_profile_summary_by_keycloak_id(db, keycloak_user_id)
