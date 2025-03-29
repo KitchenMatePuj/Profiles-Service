@@ -35,6 +35,8 @@ def update_profile_by_keycloak_id(db: Session, keycloak_user_id: str, profile_da
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found.")
     for key, value in profile_data.items():
+        if key in ["profile_id", "keycloak_user_id"]:
+            continue
         if hasattr(profile, key) and value is not None:
             setattr(profile, key, value)
     db.commit()
@@ -61,6 +63,7 @@ def get_profile_summary_by_keycloak_id(db: Session, keycloak_user_id: str):
     return {
         "keycloak_user_id": profile.keycloak_user_id,
         "saved_recipes": [r.recipe_id for r in profile.saved_recipes],
+        "cooking_time": profile.cooking_time,
         "ingredient_allergies": [a.allergy_name for a in profile.ingredient_allergies]
     }
 
