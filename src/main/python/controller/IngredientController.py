@@ -10,14 +10,14 @@ from src.main.python.service.IngredientService import (
     modify_ingredient,
     remove_ingredient
 )
-from src.main.python.transformers.IngredientTransformer import IngredientResponse
+from src.main.python.transformers.IngredientTransformer import IngredientResponse, IngredientCreateRequest
 
 router = APIRouter(prefix="/ingredients", tags=["Ingredient"])
 
 @router.post("/", response_model=IngredientResponse)
-def create_ingredient_endpoint(data: dict, db: Session = Depends(get_db)):
+def create_ingredient_endpoint(data: IngredientCreateRequest, db: Session = Depends(get_db)):
     """Creates a new ingredient entry."""
-    return create_new_ingredient(db, data)
+    return create_new_ingredient(db, data.dict())
 
 @router.get("/{ingredient_id}", response_model=IngredientResponse)
 def get_ingredient_endpoint(ingredient_id: int, db: Session = Depends(get_db)):

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime
 from src.main.python.models.Profile import Profile
@@ -17,6 +17,25 @@ class ProfileResponse(BaseModel):
     account_status: Optional[str]
     cooking_time: Optional[int]
 
+
+class ProfileCreateRequest(BaseModel):
+    keycloak_user_id: Optional[str]
+    first_name: Optional[str]
+    last_name: Optional[str]
+    email: Optional[str]
+    phone: Optional[str]
+    profile_photo: Optional[str]
+    account_status: Optional[str]
+    cooking_time: Optional[int]
+
+class ProfileUpdateRequest(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    profile_photo: Optional[str] = None
+    account_status: Optional[str] = None
+    cooking_time: Optional[int] = None
 
 class ProfileTransformer:
     @staticmethod
