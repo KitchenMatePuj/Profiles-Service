@@ -39,3 +39,7 @@ def delete_profile(db: Session, profile: Profile) -> None:
     """Elimina un perfil de la base de datos."""
     db.delete(profile)
     db.commit()
+
+def get_profiles_by_status(db: Session, status: str):
+    return db.query(Profile).filter(Profile.account_status == status).all()
+

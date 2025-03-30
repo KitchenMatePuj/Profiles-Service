@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from src.main.python.models.Profile import Profile
+from src.main.python.repository.ProfileRepository import get_profiles_by_status
 from src.main.python.transformers.ProfileTransformer import ProfileTransformer
 
 
@@ -66,4 +67,9 @@ def get_profile_summary_by_keycloak_id(db: Session, keycloak_user_id: str):
         "cooking_time": profile.cooking_time,
         "ingredient_allergies": [a.allergy_name for a in profile.ingredient_allergies]
     }
+
+
+def get_profiles_by_account_status(db: Session, status: str):
+    profiles = get_profiles_by_status(db, status)
+    return [ProfileTransformer.to_response_model(p) for p in profiles]
 

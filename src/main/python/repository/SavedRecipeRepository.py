@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from src.main.python.models.savedRecipe import SavedRecipe
 
@@ -26,3 +27,13 @@ def delete_saved_recipe(db: Session, saved_recipe: SavedRecipe) -> None:
     """Deletes a saved recipe entry."""
     db.delete(saved_recipe)
     db.commit()
+
+def get_most_saved_recipes(db: Session, limit: int = 10):
+    return (
+        db.query(SavedRecipe.recipe_id, func.count(SavedRecipe.recipe_id).label("count"))
+        .group_by(SavedRecipe.recipe_id)
+        .order_by(func.count(SavedRecipe.recipe_id).desc())
+        .limit(limit)
+        .all()
+    )
+

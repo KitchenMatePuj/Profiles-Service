@@ -8,7 +8,7 @@ from src.main.python.repository.SavedRecipeRepository import (
     get_saved_recipe_by_id,
     list_all_saved_recipes,
     update_saved_recipe,
-    delete_saved_recipe
+    delete_saved_recipe, get_most_saved_recipes
 )
 from src.main.python.transformers.SavedRecipeTransformer import SavedRecipeResponse
 
@@ -111,3 +111,8 @@ def remove_saved_recipe(db: Session, saved_recipe_id: int):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "An error occurred while deleting the saved recipe.", "details": str(e)}
         )
+
+
+def most_saved_recipes(db: Session, limit: int = 10):
+    results = get_most_saved_recipes(db, limit)
+    return [{"recipe_id": recipe_id, "count": count} for recipe_id, count in results]

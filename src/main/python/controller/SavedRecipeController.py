@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+from fastapi import Query
 
 from src.main.python.config.DatabasesConfig import get_db
 from src.main.python.service.SavedRecipeService import (
@@ -8,12 +9,16 @@ from src.main.python.service.SavedRecipeService import (
     get_saved_recipe,
     list_saved_recipes,
     modify_saved_recipe,
-    remove_saved_recipe
+    remove_saved_recipe, most_saved_recipes
 )
 from src.main.python.transformers.SavedRecipeTransformer import SavedRecipeRequest, SavedRecipeResponse
 
 router = APIRouter(prefix="/saved_recipes", tags=["Saved Recipe"])
 
+@router.get("/most_saved")
+def get_most_saved_recipes(limit: int = Query(10, ge=1), db: Session = Depends(get_db)):
+    """Returns the most saved recipes by users."""
+    return most_saved_recipes(db, limit)
 @router.post("/", response_model=SavedRecipeResponse)
 def create_saved_recipe_endpoint(data: SavedRecipeRequest, db: Session = Depends(get_db)):
     """Creates a new saved recipe."""
