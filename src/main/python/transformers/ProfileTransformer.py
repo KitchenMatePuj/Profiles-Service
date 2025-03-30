@@ -37,6 +37,14 @@ class ProfileUpdateRequest(BaseModel):
     account_status: Optional[str] = None
     cooking_time: Optional[int] = None
 
+class ProfileSearchRequest(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[str] = None
+    account_status: Optional[str] = None
+    allergy_name: Optional[str] = None
+
+
 class ProfileTransformer:
     @staticmethod
     def to_entity(data: dict) -> Profile:
