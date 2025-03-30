@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from src.main.python.models.Profile import Profile
+from src.main.python.models.IngredientAllergy import IngredientAllergy
 
 def create_profile(db: Session, profile: Profile) -> Profile:
     """
@@ -43,3 +44,29 @@ def delete_profile(db: Session, profile: Profile) -> None:
 def get_profiles_by_status(db: Session, status: str):
     return db.query(Profile).filter(Profile.account_status == status).all()
 
+def search_profiles(
+    db: Session,
+    first_name: str = None,
+    last_name: str = None,
+    email: str = None,
+    account_status: str = None,
+    allergy_name: str = None
+):
+    query = db.query(Profile)
+
+    if first_name:
+        query = query.filter(Profile.first_name.ilike(f"%{first_name}%"))
+
+    if last_name:
+        query = query.filter(Profile.last_name.ilike(f"%{last_name}%"))
+
+    if email:
+        query = query.filter(Profile.email.ilike(f"%{email}%"))
+
+    if account_status:
+        query = query.filter(Profile.account_status == account_status)
+
+    if allergy_name:
+        query = query.join(Profile.ingredient_allergies).filter(IngredientAllergy.allergy_name.ilike(f"%{allergy_name}%"))
+
+    return query.all()

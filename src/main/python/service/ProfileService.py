@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from src.main.python.models.Profile import Profile
 from src.main.python.repository.ProfileRepository import get_profiles_by_status
 from src.main.python.transformers.ProfileTransformer import ProfileTransformer
+from src.main.python.repository.ProfileRepository import search_profiles as search_profiles_repo
 
 
 def create_profile(db: Session, profile_data: dict):
@@ -73,3 +74,14 @@ def get_profiles_by_account_status(db: Session, status: str):
     profiles = get_profiles_by_status(db, status)
     return [ProfileTransformer.to_response_model(p) for p in profiles]
 
+
+def search_profiles_service(
+    db: Session,
+    first_name: str = None,
+    last_name:str = None,
+    email: str = None,
+    account_status: str = None,
+    allergy_name: str = None
+):
+    results = search_profiles_repo(db, first_name, last_name, email, account_status, allergy_name)
+    return [profile.keycloak_user_id for profile in results]
