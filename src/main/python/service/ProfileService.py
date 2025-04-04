@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from src.main.python.models.Profile import Profile
+from src.main.python.repository import ProfileRepository
 from src.main.python.repository.ProfileRepository import get_profiles_by_status
 from src.main.python.transformers.ProfileTransformer import ProfileTransformer
 from src.main.python.repository.ProfileRepository import search_profiles as search_profiles_repo
@@ -85,3 +86,10 @@ def search_profiles_service(
 ):
     results = search_profiles_repo(db, first_name, last_name, email, account_status, allergy_name)
     return [profile.keycloak_user_id for profile in results]
+
+def get_profile_service_by_id(db: Session, profile_id: int):
+    profile = ProfileRepository.get_profile_by_id(db, profile_id)
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found.")
+    return ProfileTransformer.to_response_model(profile)
+

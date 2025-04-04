@@ -7,7 +7,7 @@ from src.main.python.service.ProfileService import (
 
     create_profile, get_profile_by_keycloak_id, list_profiles, update_profile_by_keycloak_id,
     delete_profile_by_keycloak_id, get_profile_summary_by_keycloak_id, get_profiles_by_account_status,
-    search_profiles_service)
+    search_profiles_service, get_profile_service_by_id)
 from src.main.python.transformers.ProfileTransformer import ProfileResponse, ProfileCreateRequest, ProfileUpdateRequest, \
     ProfileSearchRequest
 
@@ -48,4 +48,8 @@ def get_profile_summary_by_keycloak_user_id(keycloak_user_id: str, db: Session =
 @router.get("/status/{status}", response_model=List[ProfileResponse])
 def get_profiles_by_status_endpoint(status: str, db: Session = Depends(get_db)):
     return get_profiles_by_account_status(db, status)
+
+@router.get("/id/{profile_id}", response_model=ProfileResponse)
+def get_profile_by_id(profile_id: int, db: Session = Depends(get_db)):
+    return get_profile_service_by_id(db, profile_id)
 
