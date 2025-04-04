@@ -70,3 +70,6 @@ def search_profiles(
         query = query.join(Profile.ingredient_allergies).filter(IngredientAllergy.allergy_name.ilike(f"%{allergy_name}%"))
 
     return query.all()
+
+def get_profile_by_id(db: Session, profile_id: int):
+    return db.query(Profile).filter(Profile.profile_id == profile_id).first()
