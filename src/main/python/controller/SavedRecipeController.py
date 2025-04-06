@@ -12,6 +12,8 @@ from src.main.python.service.SavedRecipeService import (
     remove_saved_recipe, most_saved_recipes
 )
 from src.main.python.transformers.SavedRecipeTransformer import SavedRecipeRequest, SavedRecipeResponse
+from src.main.python.service.SavedRecipeService import get_saved_recipes_by_keycloak_id
+
 
 router = APIRouter(prefix="/saved_recipes", tags=["Saved Recipe"])
 
@@ -44,3 +46,7 @@ def delete_saved_recipe_endpoint(saved_recipe_id: int, db: Session = Depends(get
     """Deletes a saved recipe."""
     remove_saved_recipe(db, saved_recipe_id)
     return {}
+
+@router.get("/saved-recipes/keycloak/{keycloak_user_id}")
+def get_saved_recipes_by_user(keycloak_user_id: str, db: Session = Depends(get_db)):
+    return get_saved_recipes_by_keycloak_id(db, keycloak_user_id)

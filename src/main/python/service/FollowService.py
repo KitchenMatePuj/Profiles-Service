@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from src.main.python.repository.ProfileRepository import get_profile_by_id
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -83,3 +84,12 @@ def remove_follow(db: Session, follower_id: int, followed_id: int):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An error occurred while deleting the follow relationship."
         )
+
+def get_followed_keycloak_ids(db: Session, profile_id: int) -> list[str]:
+    followed = list_followed(db, profile_id)
+    keycloak_ids = []
+    for follow in followed:
+        profile = get_profile_by_id(db, follow.followed_id)
+        if profile:
+            keycloak_ids.append(profile.keycloak_user_id)
+    return keycloak_ids

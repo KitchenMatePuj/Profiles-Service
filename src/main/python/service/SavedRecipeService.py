@@ -116,3 +116,18 @@ def remove_saved_recipe(db: Session, saved_recipe_id: int):
 def most_saved_recipes(db: Session, limit: int = 10):
     results = get_most_saved_recipes(db, limit)
     return [{"recipe_id": recipe_id, "count": count} for recipe_id, count in results]
+
+def get_saved_recipes_by_keycloak_id(db: Session, keycloak_user_id: str):
+    from src.main.python.service.ProfileService import get_profile_by_keycloak_id
+    profile = get_profile_by_keycloak_id(db, keycloak_user_id)
+    profile_id = profile.profile_id
+
+    recipes = db.query(SavedRecipe).filter(SavedRecipe.profile_id == profile_id).all()
+    return [
+        SavedRecipeResponse(
+            saved_recipe_id=r.saved_recipe_id,
+            profile_id=r.profile_id,
+            recipe_id=r.recipe_id
+        ) for r in recipes
+    ]
+
