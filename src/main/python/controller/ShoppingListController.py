@@ -10,14 +10,13 @@ from src.main.python.service.ShoppingListService import (
     modify_shopping_list,
     remove_shopping_list
 )
-from src.main.python.transformers.ShoppingListTransformer import ShoppingListResponse
+from src.main.python.transformers.ShoppingListTransformer import ShoppingListResponse, ShoppingListRequest
 
 router = APIRouter(prefix="/shopping_lists", tags=["Shopping List"])
 
 @router.post("/", response_model=ShoppingListResponse)
-def create_shopping_list_endpoint(data: dict, db: Session = Depends(get_db)):
-    """Creates a new shopping list entry."""
-    return create_new_shopping_list(db, data)
+def create_shopping_list_endpoint(data: ShoppingListRequest, db: Session = Depends(get_db)):
+    return create_new_shopping_list(db, data.dict())
 
 @router.get("/{shopping_list_id}", response_model=ShoppingListResponse)
 def get_shopping_list_endpoint(shopping_list_id: int, db: Session = Depends(get_db)):
@@ -33,9 +32,8 @@ def list_shopping_lists_endpoint(profile_id: int, db: Session = Depends(get_db))
     return list_shopping_lists(db, profile_id)
 
 @router.put("/{shopping_list_id}", response_model=ShoppingListResponse)
-def update_shopping_list_endpoint(shopping_list_id: int, data: dict, db: Session = Depends(get_db)):
-    """Updates a shopping list entry."""
-    return modify_shopping_list(db, shopping_list_id, data)
+def update_shopping_list_endpoint(shopping_list_id: int, data: ShoppingListRequest, db: Session = Depends(get_db)):
+    return modify_shopping_list(db, shopping_list_id, data.dict())
 
 @router.delete("/{shopping_list_id}", status_code=204)
 def delete_shopping_list_endpoint(shopping_list_id: int, db: Session = Depends(get_db)):

@@ -32,3 +32,11 @@ def delete_follow_endpoint(follower_id: int, followed_id: int, db: Session = Dep
     """Deletes a follow relationship."""
     remove_follow(db, follower_id, followed_id)
     return {}
+
+@router.get("/followed-keycloak-ids/{profile_id}", response_model=List[str])
+def get_followed_keycloak_ids_endpoint(profile_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieves the list of Keycloak user IDs that the profile is following.
+    """
+    from src.main.python.service.FollowService import get_followed_keycloak_ids
+    return get_followed_keycloak_ids(db, profile_id)
