@@ -5,7 +5,6 @@ class IngredientCreateRequest(BaseModel):
     shopping_list_id: int
     ingredient_name: str
     measurement_unit: str
-    quantity: str
 
 
 class IngredientResponse(BaseModel):
@@ -14,7 +13,6 @@ class IngredientResponse(BaseModel):
     shopping_list_id: int
     ingredient_name: str
     measurement_unit: str
-    quantity: str
 
     class Config:
         orm_mode = True
