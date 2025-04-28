@@ -9,7 +9,6 @@ class Ingredient(Base):
     shopping_list_id = Column(Integer, ForeignKey("shopping_list.shopping_list_id"), nullable=False)
     ingredient_name = Column(String(255), nullable=False)
     measurement_unit = Column(String(50), nullable=False)
-    quantity = Column(String(50), nullable=False)
 
     # Many-to-one with ShoppingList
     shopping_list = relationship('ShoppingList', back_populates='ingredients')

@@ -22,8 +22,7 @@ def create_new_ingredient(db: Session, ingredient_data: dict) -> IngredientRespo
             ingredient_id=created_ingredient.ingredient_id,
             shopping_list_id=created_ingredient.shopping_list_id,
             ingredient_name=created_ingredient.ingredient_name,
-            measurement_unit=created_ingredient.measurement_unit,
-            quantity=created_ingredient.quantity
+            measurement_unit=created_ingredient.measurement_unit
         )
     except IntegrityError as e:
         db.rollback()
@@ -50,8 +49,7 @@ def get_ingredient(db: Session, ingredient_id: int) -> IngredientResponse:
         ingredient_id=ingredient.ingredient_id,
         shopping_list_id=ingredient.shopping_list_id,
         ingredient_name=ingredient.ingredient_name,
-        measurement_unit=ingredient.measurement_unit,
-        quantity=ingredient.quantity
+        measurement_unit=ingredient.measurement_unit
     )
 
 def list_ingredients(db: Session, shopping_list_id: int):
@@ -63,7 +61,6 @@ def list_ingredients(db: Session, shopping_list_id: int):
             shopping_list_id=i.shopping_list_id,
             ingredient_name=i.ingredient_name,
             measurement_unit=i.measurement_unit,
-            quantity=i.quantity
         ) for i in ingredients
     ]
 
@@ -85,7 +82,6 @@ def modify_ingredient(db: Session, ingredient_id: int, data: dict) -> Ingredient
             shopping_list_id=updated.shopping_list_id,
             ingredient_name=updated.ingredient_name,
             measurement_unit=updated.measurement_unit,
-            quantity=updated.quantity
         )
     except IntegrityError as e:
         db.rollback()
