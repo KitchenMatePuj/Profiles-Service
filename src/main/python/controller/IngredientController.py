@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from src.main.python.config.DatabasesConfig import get_db
+from src.main.python.repository.IngredientRepository import list_ingredients_by_recipe
 from src.main.python.service.IngredientService import (
     create_new_ingredient,
     get_ingredient,
@@ -18,6 +19,13 @@ router = APIRouter(prefix="/ingredients", tags=["Ingredient"])
 def create_ingredient_endpoint(data: IngredientCreateRequest, db: Session = Depends(get_db)):
     """Creates a new ingredient entry."""
     return create_new_ingredient(db, data.dict())
+
+@router.get("/recipe/{recipe_id}", response_model=list[IngredientResponse])
+def get_ingredients_by_recipe(recipe_id: int, db: Session = Depends(get_db)):
+    """
+    Get all ingredients by recipe_id.
+    """
+    return list_ingredients_by_recipe(db, recipe_id)
 
 @router.get("/{ingredient_id}", response_model=IngredientResponse)
 def get_ingredient_endpoint(ingredient_id: int, db: Session = Depends(get_db)):

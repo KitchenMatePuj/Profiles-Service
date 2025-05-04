@@ -107,3 +107,15 @@ def remove_ingredient(db: Session, ingredient_id: int):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "An error occurred while deleting the ingredient.", "details": str(e)}
         )
+
+def list_ingredients_by_recipe(db: Session, recipe_id: int):
+    """Retrieves all ingredients for a given recipe."""
+    ingredients = list_ingredients_by_recipe(db, recipe_id)
+    return [
+        IngredientResponse(
+            ingredient_id=i.ingredient_id,
+            shopping_list_id=i.shopping_list_id,
+            ingredient_name=i.ingredient_name,
+            measurement_unit=i.measurement_unit
+        ) for i in ingredients
+    ]

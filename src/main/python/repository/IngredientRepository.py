@@ -26,3 +26,7 @@ def delete_ingredient(db: Session, ingredient: Ingredient) -> None:
     """Deletes an ingredient entry."""
     db.delete(ingredient)
     db.commit()
+
+def list_ingredients_by_recipe(db: Session, recipe_id: int):
+    """List all ingredients by recipe_id."""
+    return db.query(Ingredient).filter(Ingredient.recipe_id == recipe_id).all()
