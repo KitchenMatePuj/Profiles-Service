@@ -16,6 +16,7 @@ class Profile(Base):
     updated_at = Column(DateTime)
     account_status = Column(String(50))
     cooking_time = Column(Integer)
+    description = Column(String(255))
 
     ingredient_allergies = relationship("IngredientAllergy", back_populates="profile", cascade="all, delete")
 

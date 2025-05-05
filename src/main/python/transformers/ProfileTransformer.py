@@ -16,6 +16,7 @@ class ProfileResponse(BaseModel):
     updated_at: Optional[datetime]
     account_status: Optional[str]
     cooking_time: Optional[int]
+    description: Optional[str]
 
 
 class ProfileCreateRequest(BaseModel):
@@ -36,6 +37,7 @@ class ProfileUpdateRequest(BaseModel):
     profile_photo: Optional[str] = None
     account_status: Optional[str] = None
     cooking_time: Optional[int] = None
+    description: Optional[str]
 
 class ProfileSearchRequest(BaseModel):
     first_name: Optional[str] = None
@@ -65,5 +67,6 @@ class ProfileTransformer:
             created_at=profile.created_at,
             updated_at=profile.updated_at,
             account_status=profile.account_status,
-            cooking_time=profile.cooking_time
+            cooking_time=profile.cooking_time,
+            description = profile.description
         )
