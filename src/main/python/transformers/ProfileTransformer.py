@@ -28,6 +28,7 @@ class ProfileCreateRequest(BaseModel):
     profile_photo: Optional[str]
     account_status: Optional[str]
     cooking_time: Optional[int]
+    description: Optional[str]
 
 class ProfileUpdateRequest(BaseModel):
     first_name: Optional[str] = None
