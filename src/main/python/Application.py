@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware  # 👈 Importa esto
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.main.python.config.DatabasesConfig import engine
 from src.main.python.models.Profile import Base
@@ -14,16 +14,14 @@ def create_app() -> FastAPI:
     Base.metadata.create_all(bind=engine)
     app = FastAPI(title="Profile Microservice")
 
-    # 🚀 Habilitar CORS aquí mismo
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:4200", "http://localhost:8080"],  # Cambia si usas otra URL en frontend
+        allow_origins=["http://localhost:4200", "http://localhost:8080"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 
-    # Incluir los routers
     app.include_router(profile_router)
     app.include_router(follower_router)
     app.include_router(ingredient_router)
